@@ -1,0 +1,125 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'tokyocabinet'
+require 'socket'
+require 'digest/md5'
+require 'json'
+require 'logger'
+require 'fileutils'
+
+include TokyoCabinet
+
+app = {
+
+  :name   => 'borium',
+
+  :status => {
+    :nothing    => 'nothing',    # get
+    :unparsable => 'unparsable', # get
+    :error      => 'error',      # get
+    :found      => 'found',      # get
+    :stored     => 'stored'      # put
+  },
+
+  :databases => { },
+
+  :must_stop => false,
+
+  :nothing_counter => 0
+
+} 
+
+def generate_key
+  Digest::MD5.hexdigest(Time.now.to_f.to_s + '-' + (1..100).to_a.shuffle.first.to_s)
+end
+
+config = JSON.parse(File.read("/etc/#{app[:name]}/configuration.json"))
+logger = Logger.new("/var/log/#{app[:name]}/#{app[:name]}.log")
+
+server = TCPServer.open config['port']
+server.listen(config['connections'])
+
+FileUtils.mkdir_p config['storage']
+
+logger.info 'Server started'
+
+config.each do |key, value|
+  logger.info "CONFIG: #{key} => #{value}"
+end
+
+terminate = Proc.new do
+  puts 'bye.'
+  app[:must_stop] = true
+  logger.warn 'Going down.'
+  app[:databases].each do |key, hdb|
+    logger.warn "syncronize hdb: #{key}"
+    hdb.close
+  end
+  exit 0
+end
+
+trap('TERM', &terminate)
+trap('INT',  &terminate)
+trap('QUIT', &terminate)
+
+loop do
+  break if app[:must_stop]
+
+  client   = server.accept
+  data = ''
+  while line = client.gets
+    break if line == "\004\n"
+    data << line
+  end
+  chunks   = data.split(':')
+  response = {}
+
+  # respond with error if "job_type" was not given.
+  if chunks.size < 3
+    response[:status] = app[:status][:unparsable]
+    client.puts response.to_json
+    client.close
+    logger.error "wrong request: #{chunks.join(':')}"
+    next
+  end
+
+  request  = chunks.shift
+  job_type = chunks.shift
+
+  unless app[:databases][job_type]
+    app[:databases][job_type] = HDB::new
+    app[:databases][job_type].open("#{config['storage']}/#{job_type}.job.tch", HDB::OCREAT | HDB::OWRITER)
+  end
+
+  db = app[:databases][job_type]
+
+  if (request == 'put')
+    db.put(generate_key, chunks.join(':'))
+    response[:status] = app[:status][:stored]
+  else
+    db.iterinit
+    key = db.iternext
+    job = db.get(key)
+    if job
+      response[:status] = app[:status][:found]
+      response[:job] = job
+      db.out(key)
+    else
+      response[:status] = app[:status][:nothing]
+    end
+  end
+  result = response.to_json
+  client.puts result
+  client.close
+  if response[:status] == app[:status][:nothing]
+    app[:nothing_counter] += 1 
+    if app[:nothing_counter] > 5000
+        logger.info "ok #{request} #{job_type} #{db.rnum.to_s} 5K => #{result}"
+        app[:nothing_counter] = 0
+    end
+  else
+    logger.info "ok #{request} #{job_type} #{db.rnum.to_s} #{result}"
+  end
+end
+
