@@ -17,12 +17,14 @@ Jeweler::Tasks.new do |gem|
   gem.name = "borium"
   gem.homepage = "http://github.com/ktlacaelel/borium"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Borium - Distributed background engine.}
+  gem.description = %Q{Borium is a distributed super-queue engine, capable of storing many different kinds of queues (fifo).}
   gem.email = "kazu.dev@gmail.com"
   gem.authors = ["kazuyoshi tlacaelel"]
+  gem.executables << 'borium'
   # dependencies defined in Gemfile
 end
+
 Jeweler::RubygemsDotOrgTasks.new
 
 require 'rake/testtask'

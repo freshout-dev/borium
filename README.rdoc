@@ -1,6 +1,18 @@
 = borium
 
-Description goes here.
+Borium is a distributed super-queue engine, capable of storing many different kinds of queues (fifo).
+
+Borium is tcp, and it keeps everything in queue, even if the machine crashes or is turned off it will continue right where it was at as soon as it gets restarted.
+
+Borium Receives requests as text, and responds json, this way many different clients and workers will know how to interpret the data
+
+Borium ensures that a requested item in queue will be given to only one client once.
+
+Strategy is that you have two kinds of applications interacting with Borium: 1) The ones that put something in the queue. 2) The ones that get something out of the queue.
+
+Contributors: Kazuyoshi Tlacaelel, Joaquin Benitez, Ben Beltran.
+
+python api at: https://pypi.python.org/pypi/python-borium
 
 == Contributing to borium
  
