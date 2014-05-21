@@ -12,44 +12,43 @@ include TokyoCabinet
 
 app = {
 
-  :name   => 'borium',
+  :databases       => { },
+  :eot             => "\004",
+  :must_stop       => false,
+  :name            => 'borium',
+  :nothing_counter => 0,
 
   :status => {
-    :nothing    => 'nothing',    # get
-    :unparsable => 'unparsable', # get
     :error      => 'error',      # get
     :found      => 'found',      # get
-    :stored     => 'stored'      # put
-  },
-
-  :databases => { },
-
-  :must_stop => false,
-
-  :nothing_counter => 0
+    :nothing    => 'nothing',    # get
+    :stored     => 'stored',     # put
+    :unparsable => 'unparsable'  # get
+  }
 
 } 
 
-def generate_key
-  Digest::MD5.hexdigest(Time.now.to_f.to_s + '-' + (1..100).to_a.shuffle.first.to_s)
+configuration_file = "/etc/#{app[:name]}/configuration.json"
+if File.exists?(configuration_file)
+  config = JSON.parse(File.read(configuration_file))
+else
+  config = {
+    'connections' => 1000,
+    'host'        => 'localhost',
+    'log'         => 'STDOUT',
+    'port'        => 8200,
+    'storage'     => '/tmp/borium/'
+  }
 end
 
-config = JSON.parse(File.read("/etc/#{app[:name]}/configuration.json"))
-logger = Logger.new("/var/log/#{app[:name]}/#{app[:name]}.log")
-
-server = TCPServer.open config['port']
-server.listen(config['connections'])
-
-FileUtils.mkdir_p config['storage']
-
-logger.info 'Server started'
-
-config.each do |key, value|
-  logger.info "CONFIG: #{key} => #{value}"
+if File.exists?(config['log'])
+    logger = Logger.new(config['log'])
+else
+    logger = Logger.new(STDOUT)
 end
 
 terminate = Proc.new do
-  puts 'bye.'
+  puts 'Bye.'
   app[:must_stop] = true
   logger.warn 'Going down.'
   app[:databases].each do |key, hdb|
@@ -63,24 +62,41 @@ trap('TERM', &terminate)
 trap('INT',  &terminate)
 trap('QUIT', &terminate)
 
+def generate_key
+  Digest::MD5.hexdigest(Time.now.to_f.to_s + '-' + (1..100).to_a.shuffle.first.to_s)
+end
+
+FileUtils.mkdir_p(config['storage'])
+server = TCPServer.open config['host'], config['port']
+server.listen(config['connections'])
+logger.info 'Server started'
+config.each do |key, value|
+  logger.info "CONFIG: #{key} => #{value}"
+end
+
 loop do
   break if app[:must_stop]
 
-  client   = server.accept
-  data = ''
+  client = server.accept
+  data   = ''
   while line = client.gets
-    break if line == "\004\n"
     data << line
+    break if line.include?(app[:eot])
   end
+
   chunks   = data.split(':')
   response = {}
 
   # respond with error if "job_type" was not given.
   if chunks.size < 3
     response[:status] = app[:status][:unparsable]
-    client.puts response.to_json
+    begin
+      client.puts response.to_json
+    rescue => e
+      logger.warn 'Client closed the connection.'
+    end
     client.close
-    logger.error "wrong request: #{chunks.join(':')}"
+    logger.error "wrong request: #{chunks.inspect}"
     next
   end
 
@@ -95,7 +111,7 @@ loop do
   db = app[:databases][job_type]
 
   if (request == 'put')
-    db.put(generate_key, chunks.join(':'))
+    db.put(generate_key, chunks.join('').gsub(app[:eot], '').gsub(/\n$/, ''))
     response[:status] = app[:status][:stored]
   else
     db.iterinit
@@ -110,7 +126,11 @@ loop do
     end
   end
   result = response.to_json
-  client.puts result
+  begin
+    client.puts(result)
+  rescue => e
+    logger.warn 'Client closed the connection.'
+  end
   client.close
   if response[:status] == app[:status][:nothing]
     app[:nothing_counter] += 1 
