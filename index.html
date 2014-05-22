@@ -51,7 +51,8 @@
 
 <p>Because of it’s simple API, you have a lot of flexibility to integrate Borium for uses beyond just background jobs.</p>
 
-<p>How does stack up against all the other queue libraries?</p>
+<h2>
+<a name="how-does-stack-up-against-all-the-other-queue-libraries" class="anchor" href="#how-does-stack-up-against-all-the-other-queue-libraries"><span class="octicon octicon-link"></span></a>How does stack up against all the other queue libraries?</h2>
 
 <p>[demo goes here] </p>
 
@@ -84,6 +85,24 @@
 <h3>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h3>
 
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>brew install tokyo-cabinet
+<span class="nv">$ </span>gem install borium
+</pre></div>
+
+<h3>
+<a name="running-the-server" class="anchor" href="#running-the-server"><span class="octicon octicon-link"></span></a>Running the server</h3>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>borium
+</pre></div>
+
+<h3>
+<a name="passing-a-job-to-borium" class="anchor" href="#passing-a-job-to-borium"><span class="octicon octicon-link"></span></a>Passing a job to borium</h3>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>irb
+&gt; require <span class="s1">'borium'</span>
+&gt; Borium.put :ruby, <span class="s1">'hello world'</span>
+</pre></div>
+
 <h3>
 <a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h3>
 
@@ -103,6 +122,47 @@
 <a name="background-jobs" class="anchor" href="#background-jobs"><span class="octicon octicon-link"></span></a>Background Jobs</h3>
 
 <p>When a request to your application needs to perform a task that may take more than a couple of seconds, it is very important to release the web server to handle other requests. You can delegate this tasks to borium and let it handle the tasks.</p>
+
+<h4>
+<a name="web-server-example" class="anchor" href="#web-server-example"><span class="octicon octicon-link"></span></a>Web Server example</h4>
+
+<div class="highlight highlight-ruby"><pre>
+<span class="nb">require</span> <span class="s1">'borium'</span>
+<span class="nb">require</span> <span class="s1">'webrick'</span>
+
+<span class="n">server</span> <span class="o">=</span> <span class="no">WEBrick</span><span class="o">::</span><span class="no">HTTPServer</span><span class="o">.</span><span class="n">new</span> <span class="ss">:Port</span> <span class="o">=&gt;</span> <span class="mi">8000</span>
+
+<span class="n">server</span><span class="o">.</span><span class="n">mount_proc</span> <span class="s1">'/'</span> <span class="k">do</span> <span class="o">|</span><span class="n">req</span><span class="p">,</span> <span class="n">res</span><span class="o">|</span>
+  <span class="no">Borium</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">'ruby'</span><span class="p">,</span> <span class="s1">'sleep 5'</span><span class="p">)</span>
+  <span class="n">res</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s1">'{ "message" : "received" }'</span>
+<span class="k">end</span>
+
+<span class="n">server</span><span class="o">.</span><span class="n">start</span>
+
+</pre></div>
+
+<h4>
+<a name="worker-example" class="anchor" href="#worker-example"><span class="octicon octicon-link"></span></a>Worker example</h4>
+
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'borium'</span>
+<span class="c1"># require the lib/gems that you need</span>
+
+<span class="k">def</span> <span class="nf">process_job</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="s2">"Executing </span><span class="si">#{</span><span class="n">job</span><span class="si">}</span><span class="s2">"</span>
+  <span class="nb">eval</span> <span class="n">job</span>
+<span class="k">end</span>
+
+<span class="nb">puts</span> <span class="s2">"Working..."</span>
+<span class="kp">loop</span> <span class="k">do</span>
+  <span class="n">job</span> <span class="o">=</span> <span class="no">Borium</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'ruby'</span><span class="p">)</span>
+
+  <span class="k">if</span> <span class="n">job</span><span class="o">[</span><span class="s1">'status'</span><span class="o">]</span> <span class="o">==</span> <span class="s1">'found'</span>
+    <span class="n">process_job</span> <span class="n">job</span><span class="o">[</span><span class="s1">'job'</span><span class="o">].</span><span class="n">chomp</span>
+  <span class="k">end</span>
+
+  <span class="nb">sleep</span> <span class="mi">0</span><span class="o">.</span><span class="mi">5</span>
+<span class="k">end</span>
+</pre></div>
 
 <p>Check the example at: 
 <a href="https://github.com/freshout-dev/deprecated-borium/tree/visualization/examples/bg1">https://github.com/freshout-dev/deprecated-borium/tree/visualization/examples/bg1</a></p>
