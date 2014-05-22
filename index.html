@@ -6,7 +6,55 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="Borium : Borium - Distributed background engine." />
 
+    <script type="text/javascript" src="javascripts/lib/neon/neon.js"></script>
+    <script type="text/javascript" src="javascripts/lib/neon/stdlib/custom_event.js"></script>
+    <script type="text/javascript" src="javascripts/lib/neon/stdlib/custom_event_support.js"></script>
+
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+    <script src="javascripts/lib/snap.svg-min.js" ></script>
+    <script src="javascripts/lib/snap-extensions.js" ></script>
+
+    <script src="javascripts/lib/borium-anim.js" ></script>
+
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/viz.css">
+    <style type="text/css">
+      circle.job {
+        stroke: #0090FF;
+        fill: rgba(0,0,0,0.2);
+        stroke-width: 2;
+        filter: url('#jobGlow');
+      }
+
+      circle.job.waiting {
+        stroke: #FF9000;
+        filter: url('#waitingGlow');
+      }
+
+      circle.worker {
+        stroke : #009000;
+        stroke-width: 2;
+        fill : rgba(0, 90, 0, 0.2);
+        filter: url('#workerGlow');
+      }
+
+      circle.worker.fetched {
+        fill : #009000;
+      }
+
+      .queue {
+        stroke : #999999;
+        fill : rgba(0,0,0,0.3);
+        stroke-width: 1;
+      }
+
+      .layer1 {
+        filter: url('#drop-shadow');
+        -webkit-filter: drop-shadow(0 6px 3px rgba(0,0,0,0.9));
+      }
+    </style>
+
 
     <title>Borium</title>
   </head>
@@ -52,9 +100,54 @@
 <p>Because of it’s simple API, you have a lot of flexibility to integrate Borium for uses beyond just background jobs.</p>
 
 <h2>
-<a name="how-does-stack-up-against-all-the-other-queue-libraries" class="anchor" href="#how-does-stack-up-against-all-the-other-queue-libraries"><span class="octicon octicon-link"></span></a>How does stack up against all the other queue libraries?</h2>
+<a name="see-it-in-action" class="anchor" href="#see-it-in-action"><span class="octicon octicon-link"></span></a>
+How does stack up against all the other queue libraries?
+</h2>
 
-<p>[demo goes here] </p>
+<div>
+  <div class="container">
+    <div class="layer1 rotated"></div>
+    <div class="layer2 rotated"></div>
+    <div class="layer-text rotated">
+      <span class="label1">Jobs</span>
+      <span class="label2">Queue</span>
+      <span class="label3">Workers</span>
+    </div>
+    <div class="layer3 rotated">
+
+      <svg class="viz" id="svg">
+        <filter id="jobGlow" filterUnits="userSpaceOnUse"><feGaussianBlur in="SourceAlpha" stdDeviation="4"></feGaussianBlur><feOffset dx="2" dy="2" result="offsetblur"></feOffset><feFlood flood-color="rgba(0,144,255,0.7)"></feFlood><feComposite in2="offsetblur" operator="in"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+        <filter id="waitingGlow" filterUnits="userSpaceOnUse"><feGaussianBlur in="SourceAlpha" stdDeviation="4"></feGaussianBlur><feOffset dx="2" dy="2" result="offsetblur"></feOffset><feFlood flood-color="rgba(255,144,0,0.7)"></feFlood><feComposite in2="offsetblur" operator="in"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+        <filter id="workerGlow" filterUnits="userSpaceOnUse"><feGaussianBlur in="SourceAlpha" stdDeviation="4"></feGaussianBlur><feOffset dx="2" dy="2" result="offsetblur"></feOffset><feFlood flood-color="rgba(0,144,0,0.7)"></feFlood><feComposite in2="offsetblur" operator="in"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+        <filter id="drop-shadow">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+          <feOffset dx="0" dy="7" result="offsetblur"/>
+          <feFlood flood-color="#000000"/>
+          <feComposite in2="offsetblur" operator="in"/>
+          <feMerge>
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </svg>
+
+    </div>
+  </div>
+  <div class="controls">
+    <div class="control">
+      <input class="jobSlider" type="range" name="jobDuration" min="0" max="4">
+      <span>Job spawn rate</span>
+    </div>
+    <div class="control">
+      <input class="workersSlider" type="range" name="workers" min="1" max="8">
+      <span>Number of workers</span>
+    </div>
+  </div>
+
+  <script>
+    var viz = new Visualization();
+  </script>
+</div>
 
 <h2>
 <a name="what-makes-it-special" class="anchor" href="#what-makes-it-special"><span class="octicon octicon-link"></span></a>What Makes it Special?</h2>
@@ -296,7 +389,7 @@
       </footer>
     </div>
 
-    
+
 
   </body>
 </html>

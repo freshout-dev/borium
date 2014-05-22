@@ -1,0 +1,102 @@
+body {
+  transform-style: preserve-3d;
+  padding: 0;
+  margin: 0;
+}
+
+.viz {
+  /*border: 2px solid black;*/
+  width: 640px;
+  height: 280px;
+}
+
+.container {
+  /*background: linear-gradient(to bottom, #131313 32%, #4c4c4c 68%);*/
+  padding-top : 10px;
+  height : 290px;
+  width: 640px;
+  position : relative;
+  margin: 0 auto;
+  -webkit-transform: translate3d(0px, 0px, 0px);
+  -moz-transform:    translate3d(0px, 0px, 0px);
+  -ms-transform:     translate3d(0px, 0px, 0px);
+  -o-transform:      translate3d(0px, 0px, 0px);
+  transform:         translate3d(0px, 0px, 0px);
+}
+
+.rotated {
+  -webkit-backface-visibility: visible;
+  -moz-backface-visibility:    visible;
+  -ms-backface-visibility:     visible;
+  backface-visibility:         visible;
+
+  -webkit-transform: perspective(690px) rotateY(0deg) rotate3d(1, 0, 0, 15deg);
+  -moz-transform:    perspective(690px) rotateY(0deg) rotate3d(1, 0, 0, 15deg);
+  -ms-transform:     perspective(690px) rotateY(0deg) rotate3d(1, 0, 0, 15deg);
+  -o-transform:      perspective(690px) rotateY(0deg) rotate3d(1, 0, 0, 15deg);
+  transform:         perspective(690px) rotateY(0deg) rotate3d(1, 0, 0, 15deg);
+
+/*  -webkit-transform-origin: 50% 100% 0;
+  -moz-transform-origin:    50% 100% 0;
+  -ms-transform-origin:     50% 100% 0;
+  -o-transform-origin:      50% 100% 0;
+  transform-origin:         50% 100% 0;
+*/}
+
+.layer1 {
+  position : absolute;
+  height : 280px;
+  width: 100%;
+  background-image: url('../inflicted.png');
+
+  /*filter: url('#drop-shadow');*/
+  border-radius: 5px;
+}
+
+.layer2 {
+  position : absolute;
+  height : 280px;
+  width : 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.5) 10%, rgba(0,0,0,0) 50%);
+
+  border-radius: 5px;
+}
+
+.layer3 {
+  position : absolute;
+  height : 280px;
+  width : 100%;
+
+  border-radius: 5px;
+}
+
+.layer-text {
+  position : absolute;
+  height : 280px;
+  width : 100%;
+  color: white;
+  font-size: 20px
+}
+
+.layer-text span {
+  position: absolute;
+  top: 20px;
+}
+
+.layer-text .label1 { left: 80px; }
+.layer-text .label2 { left: 288px; }
+.layer-text .label3 { right: 80px; }
+
+
+.controls {
+  text-align: center;
+}
+
+.controls .control {
+  display: inline-block;
+  padding: 20px;
+}
+
+.controls .control span {
+  display: block;
+}
