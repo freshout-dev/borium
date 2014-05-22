@@ -82,21 +82,18 @@
 <h2>
 <a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
 
-<h3>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h3>
+<p><strong>Installation</strong></p>
 
 <div class="highlight highlight-bash"><pre><span class="nv">$ </span>brew install tokyo-cabinet
 <span class="nv">$ </span>gem install borium
 </pre></div>
 
-<h3>
-<a name="running-the-server" class="anchor" href="#running-the-server"><span class="octicon octicon-link"></span></a>Running the server</h3>
+<p><strong>Running the server</strong></p>
 
 <div class="highlight highlight-bash"><pre><span class="nv">$ </span>borium
 </pre></div>
 
-<h3>
-<a name="passing-a-job-to-borium" class="anchor" href="#passing-a-job-to-borium"><span class="octicon octicon-link"></span></a>Passing a job to borium</h3>
+<p><strong>Passing a job to Borium</strong></p>
 
 <div class="highlight highlight-bash"><pre><span class="nv">$ </span>irb
 &gt; require <span class="s1">'borium'</span>
@@ -123,8 +120,7 @@
 
 <p>When a request to your application needs to perform a task that may take more than a couple of seconds, it is very important to release the web server to handle other requests. You can delegate this tasks to borium and let it handle the tasks.</p>
 
-<h4>
-<a name="web-server-example" class="anchor" href="#web-server-example"><span class="octicon octicon-link"></span></a>Web Server example</h4>
+<p><strong>Web Server example</strong></p>
 
 <div class="highlight highlight-ruby"><pre>
 <span class="nb">require</span> <span class="s1">'borium'</span>
@@ -141,8 +137,7 @@
 
 </pre></div>
 
-<h4>
-<a name="worker-example" class="anchor" href="#worker-example"><span class="octicon octicon-link"></span></a>Worker example</h4>
+<p><strong>Worker example</strong></p>
 
 <div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'borium'</span>
 <span class="c1"># require the lib/gems that you need</span>
@@ -169,8 +164,7 @@
 
 <p>There are many situations when a task needs to be solved right away. You can create a set of workers specialized for high priority tasks and execute them before the low priority ones without special configurations.</p>
 
-<h4>
-<a name="start-low-priority-worker" class="anchor" href="#start-low-priority-worker"><span class="octicon octicon-link"></span></a>Start low priority worker</h4>
+<p><strong>Start low priority worker</strong></p>
 
 <div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'borium'</span>
 <span class="c1"># require the lib/gems that you need</span>
@@ -192,8 +186,7 @@
 <span class="k">end</span>
 </pre></div>
 
-<h4>
-<a name="start-high-priority-worker" class="anchor" href="#start-high-priority-worker"><span class="octicon octicon-link"></span></a>Start high priority worker</h4>
+<p><strong>Start high priority worker</strong></p>
 
 <div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'borium'</span>
 <span class="c1"># require the lib/gems that you need</span>
@@ -215,8 +208,7 @@
 <span class="k">end</span>
 </pre></div>
 
-<h4>
-<a name="send-jobs" class="anchor" href="#send-jobs"><span class="octicon octicon-link"></span></a>Send jobs</h4>
+<p><strong>Send jobs</strong></p>
 
 <div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'borium'</span>
 <span class="mi">5</span><span class="o">.</span><span class="n">times</span> <span class="p">{</span> <span class="no">Borium</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">'ruby-low'</span><span class="p">,</span> <span class="s1">'sleep 5'</span><span class="p">)</span> <span class="p">}</span>
@@ -228,8 +220,7 @@
 
 <p>Image processing is very intensive on computer resources. You can easily scale these types of applications with Borium with one or more specialized workers across different computers.</p>
 
-<h4>
-<a name="start-an-image-processing-worker" class="anchor" href="#start-an-image-processing-worker"><span class="octicon octicon-link"></span></a>Start an image processing worker</h4>
+<p><strong>Start an image processing worker</strong></p>
 
 <div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'borium'</span>
 <span class="nb">require</span> <span class="s1">'json'</span>
