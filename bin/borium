@@ -146,8 +146,8 @@ loop do
   if response[:status] == app[:status][:nothing]
     app[:nothing_counter] += 1 
     if app[:nothing_counter] > 5000
-        logger.info "ok #{request} #{job_type} #{db.rnum.to_s} 5K => #{result}"
-        app[:nothing_counter] = 0
+      logger.info "ok #{request} #{job_type} #{db.rnum.to_s} 5K => #{result}"
+      app[:nothing_counter] = 0
     end
   else
     logger.info "ok #{request} #{job_type} #{db.rnum.to_s} #{result}"
