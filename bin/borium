@@ -24,27 +24,30 @@ app = {
     :nothing    => 'nothing',    # get
     :stored     => 'stored',     # put
     :unparsable => 'unparsable'  # get
-  }
+  },
 
-} 
-
-configuration_file = "/etc/#{app[:name]}/configuration.json"
-if File.exists?(configuration_file)
-  config = JSON.parse(File.read(configuration_file))
-else
-  config = {
+  :config => {
     'connections' => 1000,
     'host'        => 'localhost',
     'log'         => 'STDOUT',
     'port'        => 8200,
     'storage'     => '/tmp/borium/'
   }
+
+} 
+
+configuration_file = "/etc/#{app[:name]}/configuration.json"
+
+if File.exists?(configuration_file)
+  config = JSON.parse(File.read(configuration_file))
+else
+  config = app[:config]
 end
 
 if File.exists?(config['log'])
-    logger = Logger.new(config['log'])
+  logger = Logger.new(config['log'])
 else
-    logger = Logger.new(STDOUT)
+  logger = Logger.new(STDOUT)
 end
 
 terminate = Proc.new do
@@ -63,13 +66,17 @@ trap('INT',  &terminate)
 trap('QUIT', &terminate)
 
 def generate_key
-  Digest::MD5.hexdigest(Time.now.to_f.to_s + '-' + (1..100).to_a.shuffle.first.to_s)
+  Digest::MD5.hexdigest(
+    Time.now.to_f.to_s + '-' + (1..100).to_a.shuffle.first.to_s
+  )
 end
 
 FileUtils.mkdir_p(config['storage'])
 server = TCPServer.open config['host'], config['port']
 server.listen(config['connections'])
+
 logger.info 'Server started'
+
 config.each do |key, value|
   logger.info "CONFIG: #{key} => #{value}"
 end
@@ -79,6 +86,7 @@ loop do
 
   client = server.accept
   data   = ''
+
   while line = client.gets
     data << line
     break if line.include?(app[:eot])
@@ -105,7 +113,10 @@ loop do
 
   unless app[:databases][job_type]
     app[:databases][job_type] = HDB::new
-    app[:databases][job_type].open("#{config['storage']}/#{job_type}.job.tch", HDB::OCREAT | HDB::OWRITER)
+    app[:databases][job_type].open(
+      "#{config['storage']}/#{job_type}.job.tch",
+      HDB::OCREAT | HDB::OWRITER
+    )
   end
 
   db = app[:databases][job_type]
