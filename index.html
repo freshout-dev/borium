@@ -108,14 +108,17 @@
 <h3>
 <a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h3>
 
-<h3>
-<a name="simple" class="anchor" href="#simple"><span class="octicon octicon-link"></span></a>Simple</h3>
+<p>Configuration is a JSON file.</p>
 
-<h3>
-<a name="multiple" class="anchor" href="#multiple"><span class="octicon octicon-link"></span></a>Multiple</h3>
+<pre><code>// place on /etc/borium/configuration.json
 
-<h3>
-<a name="specialized" class="anchor" href="#specialized"><span class="octicon octicon-link"></span></a>Specialized</h3>
+{
+  "connections" : 1001,
+  "storage"     : "/storage/borium/",
+  "log"         : "/var/log/borium/borium.log",
+  "port"        : 8200
+}
+</code></pre>
 
 <h2>
 <a name="use-cases" class="anchor" href="#use-cases"><span class="octicon octicon-link"></span></a>Use Cases</h2>
