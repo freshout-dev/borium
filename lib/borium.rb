@@ -4,8 +4,10 @@ require 'socket'
 
 class Borium
 
+  # @visibility private
   EOT = "\004"
 
+  # @visibility private
   DEFAULT_CONFIG = {
     'connections' => 1000,
     'host'        => 'localhost',
@@ -21,6 +23,8 @@ class Borium
   def self.put type, job
     _request "put:#{type}:#{job}"
   end
+
+  private
 
   def self._config
     @_config ||= _resolve_configuration
