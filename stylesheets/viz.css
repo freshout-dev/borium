@@ -87,7 +87,6 @@ body {
 .layer-text .label2 { left: 288px; }
 .layer-text .label3 { right: 80px; }
 
-
 .controls {
   text-align: center;
 }
@@ -101,32 +100,56 @@ body {
   display: block;
 }
 
-.info-overlay {
-  fill: rgba(255, 255, 255, 0.2);
+/* Info boxes */
+.overlays-wrapper {
+   -webkit-transform: translate3d(0px, 0px, 0px)
 }
+
+.overlays-layer {
+  position: absolute;
+  background-color: rgba(255, 0, 0, 0.4);
+  width: 640px;
+  height: 280px;
+}
+
+.overlays-layer .overlay {
+  position: absolute;
+  height: 100%;
+  border: 3px solid blue;
+}
+
+.jobs-overlay {
+  width: 190px;
+  left: 0;
+}
+.queue-overlay {
+  width: 260px;
+  left: 190px;
+}
+.workers-overlay {
+  width: 190px  ;
+  left: 450px;
+}
+
 
 .tooltips-layer {
   position: absolute;
+  z-index: 0;
 }
 
 .info-tooltip {
-  visibility: hidden;
+  /*display: none;*/
+  top: -1000px;
 }
 
 .info-tooltip.active {
-  visibility: visible;
+  display: block;
+  top: 0;
 }
 
 .info-tooltip .bubble {
-/*  stroke: #000;
-  stroke-width: 2;
-  fill: #FFFFFF;
-*/
   background-color: #FFFFFF;
   border: 2px solid red;
-}
-
-.info-tooltip .text {
 }
 
 .info-tooltip {

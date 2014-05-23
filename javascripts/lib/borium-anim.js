@@ -71,6 +71,8 @@ Class('Worker').includes(CustomEventSupport)({
         SPRITE_RADIUS : 12,
         SPRITE_SEP : 6,
 
+        _stopped : true,
+
         init : function (config) {
             var worker = this;
 
@@ -106,11 +108,17 @@ Class('Worker').includes(CustomEventSupport)({
         },
 
         start : function () {
+            this.pid = new Date().getTime();
+            console.log("Starting", (new Date().getTime()));
+            var wasStopped = this._stopped;
             this._stopped = false;
-            this._loop();
+            if(wasStopped) {
+                this._loop(this.pid);
+            }
         },
 
         stop : function() {
+            console.log("Stopping", (new Date().getTime()));
             this._stopped = true;
         },
 
@@ -128,11 +136,17 @@ Class('Worker').includes(CustomEventSupport)({
             this.dispatch('executed');
         },
 
-        _loop : function () {
-            this._loopFetch();
+        _loop : function (pid) {
+            console.log("Calling loop");
+            this._loopFetch(pid);
         },
 
-        _loopFetch : function() {
+        _loopFetch : function(pid) {
+            if(pid !== this.pid) {
+                console.log("DIFFERENT! loopfetch");
+                return;
+            }
+            console.log("LOOp fetch");
             var worker = this;
 
             if(this._stopped) {
@@ -140,28 +154,33 @@ Class('Worker').includes(CustomEventSupport)({
             }
 
             this.sprite.animate({ cx : this.startX - 150, cy : this.baseline }, this.FETCH_SPEED, function() {
+                console.log("Callback on loopfetch animation", worker._stopped);
                 var response = worker.queue.get(worker.type);
                 if(response.status === 'found') {
                     worker._job = response.job;
+                    worker._job.sprite.remove();
+                    worker.sprite.addClass('fetched');
                 }
-                worker._loopWork();
+                if(!worker._stopped) {
+                    worker._loopWork(pid);
+                }
             });
         },
 
-        _loopWork : function() {
+        _loopWork : function(pid) {
+            if(pid !== this.pid) {
+                console.log("DIFFERENT! loopwork");
+                return;
+            }
+            console.log(":Loop wokr");
             var worker = this;
 
             if(this._stopped) {
                 return;
             }
 
-            if(this._job) {
-                // console.log("Gotta do work!");
-                // this.sprite.attr({ fill : 'green' });
-                this.sprite.addClass('fetched');
-                this._job.sprite.remove();
-            }
             this.sprite.animate({ cx : this.startX, cy : this.startY }, this.WORK_SPEED, function() {
+                console.log("Callback on loopWork sprite animation", worker._stopped);
                 if(worker._job) {
                     worker.jobInProgressSprite = worker.canvas.circle(
                             worker.sprite.attr('cx'),
@@ -173,16 +192,17 @@ Class('Worker').includes(CustomEventSupport)({
                     worker.sprite.removeClass('fetched');
                     worker.sprite.addClass('processing');
                     worker.jobInProgressSprite.animate({ 'r' : 0 }, worker._job.getDuration(), function() {
-                        if(worker.jobInProgressSprite) {
-                            worker.jobInProgressSprite.removeClass('processing');
-                            worker.jobInProgressSprite.remove();
-                            worker.jobInProgressSprite = null;
+                        console.log("Callback on loopWork job animation", worker._stopped);
+                        if(!worker._stopped) {
+                            worker._loopFetch(pid);
                         }
+                        this.remove();
                         worker._job = null;
-                        worker._loopFetch();
                     });
                 } else {
-                    worker._loopFetch();
+                    if(!worker._stopped) {
+                        worker._loopFetch(pid);
+                    }
                 }
             });
         },
@@ -206,7 +226,7 @@ Class('WorkerGenerator').includes(CustomEventSupport)({
             this._workers = [];
 
             this.workers.forEach(function(type, i) {
-                workerGenerator.addWorker(type);
+                workerGenerator.addWorker(type, false);
             });
         },
 
@@ -308,6 +328,8 @@ Class('JobGenerator').includes(CustomEventSupport)({
 
         rate : 2,
 
+        _stopped : true,
+
         init : function (config) {
             var jobGenerator = this;
 
@@ -326,8 +348,11 @@ Class('JobGenerator').includes(CustomEventSupport)({
         },
 
         start : function() {
+            var wasStopped = this._stopped;
             this._stopped = false;
-            this._loop();
+            if(wasStopped) {
+                this._loop();
+            }
         },
 
         stop : function() {
@@ -383,6 +408,10 @@ Class('Tooltip')({
             // this.bubble = this.canvas.rect(-20, -20, 80, 30).addClass('bubble');
             // this.text = this.canvas.text(25, 25, "Lorem ipsum").addClass('text');
             // this.group = this.canvas.g(this.bubble, this.text).addClass('info-tooltip');
+
+            this.overlay.on('mouseover', this.activate.bind(this));
+            this.overlay.on('mouseout', this.deactivate.bind(this));
+            // console.log("BOUND!");
         },
 
         activate : function() {
@@ -404,8 +433,7 @@ Class('Visualization')({
 
             this.canvas = Snap('#svg');
 
-            // this.canvas.glowFilter = this.canvas.filter(Snap.filter.shadow(2, 2, 4, 'rgba(0, 144, 255, 0.7)'));
-            this.canvas.glowFilter = this.canvas.filter(Snap.filter.shadow(2, 2, 4, 'rgba(0, 144, 0, 0.7)'));
+            // this.canvas.glowFilter = this.canvas.filter(Snap.filter.shadow(2, 2, 4, 'rgba(0, 144, 0, 0.7)'));
 
             this.queue = new Queue({ canvas : this.canvas });
             this.jobGenerator = new JobGenerator({
@@ -417,11 +445,11 @@ Class('Visualization')({
             this.workerGenerator = new WorkerGenerator({
                 canvas : this.canvas,
                 queue : this.queue,
-                workers : ['A', 'A', 'A']
+                workers : ['A']
             });
 
             this.jobGenerator.start();
-            // this.workerGenerator.start();
+            this.workerGenerator.start();
 
             var jobSlider = $('.jobSlider');
             var workersSlider = $('.workersSlider');
@@ -434,10 +462,75 @@ Class('Visualization')({
                 viz.jobGenerator.setRate($(this).val());
             });
 
-            var jobsTooltip = new Tooltip({ canvas : this.canvas });
-            var jobsTooltipOverlay = this.canvas.rect(0, 0, this.queue.SPRITE_X, 280).addClass('info-overlay');
-            jobsTooltipOverlay.mouseover(function() { jobsTooltip.activate(); });
-            jobsTooltipOverlay.mouseout(function() { jobsTooltip.deactivate(); });
+            var jobsTooltip = new Tooltip({ canvas : this.canvas, overlay : $('.jobs-overlay') });
+            // var jobsTooltipOverlay = this.canvas.rect(0, 0, this.queue.SPRITE_X, 280).addClass('info-overlay');
+            // jobsTooltipOverlay.mouseover(function() { jobsTooltip.activate(); });
+            // jobsTooltipOverlay.mouseout(function() { jobsTooltip.deactivate(); });
+
+            this.bindBrowserFocus();
+        },
+
+        pause : function() {
+            this.jobGenerator.stop();
+            this.workerGenerator.stop();
+        },
+
+        resume : function() {
+            this.jobGenerator.start();
+            this.workerGenerator.start();
+        },
+
+        // Visibility API
+        // Adapted from http://stackoverflow.com/questions/7389328/detect-if-browser-tab-has-focus
+        bindBrowserFocus : function() {
+            var viz = this;
+
+            var hidden = "hidden";
+
+            var onchange = function(evt) {
+                var status;
+                var v = 'visible', h = 'hidden',
+                    evtMap = {
+                        focus:v, focusin:v, pageshow:v, blur:h, focusout:h, pagehide:h
+                    };
+
+                evt = evt || window.event;
+                if (evt.type in evtMap) {
+                    console.log("EVTMAP: ", evt.type);
+                    status = evtMap[evt.type];
+                    if(status === h) {
+                        viz.pause();
+                    } else {
+                        viz.resume();
+                    }
+                } else {
+                    status = this[hidden] ? h : v;
+                    console.log("Checking direct status", status);
+                    console.log(new Date().getTime());
+                    if(status === h) {
+                        viz.pause();
+                    } else {
+                        viz.resume();
+                    }
+                }
+            };
+
+            // Standards:
+            if (hidden in document) {
+                document.addEventListener("visibilitychange", onchange);
+            } else if ((hidden = "mozHidden") in document) {
+                document.addEventListener("mozvisibilitychange", onchange);
+            } else if ((hidden = "webkitHidden") in document) {
+                document.addEventListener("webkitvisibilitychange", onchange);
+            } else if ((hidden = "msHidden") in document) {
+                document.addEventListener("msvisibilitychange", onchange);
+            } else if ('onfocusin' in document) { // IE 9 and lower:
+                document.onfocusin = document.onfocusout = onchange;
+            } else { // All others:
+                window.onpageshow = window.onpagehide = window.onfocus = window.onblur = onchange;
+            }
+
         }
+
     }
 });

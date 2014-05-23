@@ -104,17 +104,11 @@ How does it work?
 </h2>
 
 <div>
+
+
   <div class="container">
     <div class="layer1 rotated"></div>
     <div class="layer2 rotated"></div>
-    <div class="tooltips-layer">
-      <div class="info-tooltip jobs-tooltip">
-        <div class="bubble">
-          The jobs are sent by the client using Borium's API method <pre>Borium.put(type, job)</pre>.
-          The client can be any process that can talk to Borium's socket.
-        </div>
-      </div>
-    </div>
     <div class="layer-text rotated">
       <span class="label1">Jobs</span>
       <span class="label2">Queue</span>
@@ -139,7 +133,29 @@ How does it work?
       </svg>
 
     </div>
+
+
+  <div class="overlays-wrapper">
+    <div class="overlays-layer rotated">
+
+      <div class="tooltips-layer">
+        <div class="info-tooltip jobs-tooltip">
+          <div class="bubble">
+            The jobs are sent by the client using Borium's API method Borium.put(type, job).
+            The client can be any process that can talk to Borium's socket.
+          </div>
+        </div>
+      </div>
+
+      <div class="jobs-overlay overlay"></div>
+      <div class="queue-overlay overlay"></div>
+      <div class="workers-overlay overlay"></div>
+    </div>
   </div>
+
+
+  </div>
+
   <div class="controls">
     <div class="control">
       <input class="jobSlider" type="range" name="jobDuration" min="0" max="4">
