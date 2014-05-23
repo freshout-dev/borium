@@ -28,6 +28,7 @@ Snap.plugin(function (Snap, Element) {
     if (newClassName !== undefined) {
       this.node.className.baseVal = newClassName;
     }
+    return this;
   };
   // removes one or more space-separated class names.
   Element.prototype.removeClass = function(classes) {
@@ -35,6 +36,7 @@ Snap.plugin(function (Snap, Element) {
     if (newClassName !== undefined) {
       this.node.className.baseVal = newClassName;
     }
+    return this;
   };
   // toggles the specified class name.
   Element.prototype.toggleClass = function(clazz, toggle) {
@@ -46,5 +48,6 @@ Snap.plugin(function (Snap, Element) {
     } else {
       this.removeClass(clazz);
     }
+    return this;
   };
 });

@@ -365,6 +365,38 @@ Class('JobGenerator').includes(CustomEventSupport)({
     }
 });
 
+Class('Tooltip')({
+    prototype : {
+
+        ELEMENT_HTML : '<div><div class="bubble">Lorem ipsum</div></div>',
+        ELEMENT_CLASS : 'info-tooltip',
+
+        init : function(config) {
+            var tooltip = this;
+
+            Object.keys(config || {}).forEach(function (property) {
+                tooltip[property] = config[property];
+            });
+
+            // this.element = $(this.ELEMENT_HTML).appendTo($('.tooltips-layer')).addClass(this.ELEMENT_CLASS);
+            this.element = $('.jobs-tooltip');
+            // this.bubble = this.canvas.rect(-20, -20, 80, 30).addClass('bubble');
+            // this.text = this.canvas.text(25, 25, "Lorem ipsum").addClass('text');
+            // this.group = this.canvas.g(this.bubble, this.text).addClass('info-tooltip');
+        },
+
+        activate : function() {
+            this.element.addClass('active');
+            // this.group.addClass('active');
+        },
+
+        deactivate : function() {
+            this.element.removeClass('active');
+            // this.group.removeClass('active');
+        }
+    }
+});
+
 Class('Visualization')({
     prototype : {
         init : function() {
@@ -401,6 +433,11 @@ Class('Visualization')({
             jobSlider.on('change', function() {
                 viz.jobGenerator.setRate($(this).val());
             });
+
+            var jobsTooltip = new Tooltip({ canvas : this.canvas });
+            var jobsTooltipOverlay = this.canvas.rect(0, 0, this.queue.SPRITE_X, 280).addClass('info-overlay');
+            jobsTooltipOverlay.mouseover(function() { jobsTooltip.activate(); });
+            jobsTooltipOverlay.mouseout(function() { jobsTooltip.deactivate(); });
         }
     }
 });
