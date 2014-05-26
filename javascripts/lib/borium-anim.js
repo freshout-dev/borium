@@ -269,7 +269,7 @@ Class('WorkerGenerator').includes(CustomEventSupport)({
             return worker;
         },
 
-        setWorkers : function(number, type) {
+        setWorkers : function(number, type, startImmediately) {
             number = parseInt(number, 10);
             var i;
             if(this._workers.length > number) {
@@ -280,7 +280,7 @@ Class('WorkerGenerator').includes(CustomEventSupport)({
 
             } else if (this._workers.length < number) {
                 for(i = this._workers.length; i < number; i++) {
-                    this.addWorker(type);
+                    this.addWorker(type, startImmediately);
                 }
             }
         },
@@ -392,6 +392,9 @@ Class('JobGenerator').includes(CustomEventSupport)({
 
 Class('Visualization')({
     prototype : {
+
+        active : false,
+
         init : function() {
             var viz = this;
 
@@ -412,14 +415,14 @@ Class('Visualization')({
                 workers : ['A', 'A', 'A']
             });
 
-            this.jobGenerator.start();
-            this.workerGenerator.start();
+            // this.jobGenerator.start();
+            // this.workerGenerator.start();
 
             var jobSlider = $('.jobSlider');
             var workersSlider = $('.workersSlider');
 
             workersSlider.on('change', function() {
-                viz.workerGenerator.setWorkers($(this).val(), 'A');
+                viz.workerGenerator.setWorkers($(this).val(), 'A', viz.active);
             });
 
             jobSlider.on('change', function() {
@@ -430,13 +433,19 @@ Class('Visualization')({
         },
 
         pause : function() {
+            this.active = false;
             this.jobGenerator.stop();
             this.workerGenerator.stop();
         },
 
         resume : function() {
+            this.active = true;
             this.jobGenerator.start();
             this.workerGenerator.start();
+        },
+
+        start : function() {
+            this.resume();
         },
 
         // Visibility API
@@ -445,6 +454,7 @@ Class('Visualization')({
             var viz = this;
 
             var hidden = "hidden";
+            var wasActive = viz.active;
 
             var onchange = function(evt) {
                 var status;
@@ -454,22 +464,27 @@ Class('Visualization')({
                     };
 
                 evt = evt || window.event;
+
+
                 if (evt.type in evtMap) {
-                    console.log("EVTMAP: ", evt.type);
                     status = evtMap[evt.type];
                     if(status === h) {
+                        wasActive = viz.active;
                         viz.pause();
                     } else {
-                        viz.resume();
+                        if(wasActive) {
+                            viz.resume();
+                        }
                     }
                 } else {
                     status = this[hidden] ? h : v;
-                    console.log("Checking direct status", status);
-                    console.log(new Date().getTime());
                     if(status === h) {
+                        wasActive = viz.active;
                         viz.pause();
                     } else {
-                        viz.resume();
+                        if(wasActive) {
+                            viz.resume();
+                        }
                     }
                 }
             };

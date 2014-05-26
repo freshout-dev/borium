@@ -188,13 +188,40 @@
 How does it work?
 </h2>
 
+<p>
+  Borium's architecture consists on three parts:
+</p>
+
+<p>
+  <dl>
+    <dt>The Server</dt>
+    <dd>
+      Borium server listens for requests to put or retrieve a job from the queue.
+      Internally, it persists the jobs and handles concurrency, making it
+      resilient.
+    </dd>
+    <dt>The jobs</dt>
+    <dd>
+      The jobs are passed from the client to the Borium server with the information
+      needed for the workers to process it.
+    </dd>
+    <dt>The workers</dt>
+    <dd>
+      The workers are specialized programs that execute a single task. They continuously
+      poll the Borium server for new jobs. You can have any number of workers of
+      different types to suit yout particular needs.
+    </dd>
+  </dl>
+</p>
+
+
 <div>
   <div class="container">
     <div class="layer1 rotated"></div>
     <div class="layer2 rotated"></div>
     <div class="layer-text rotated">
       <span class="label1">Jobs</span>
-      <span class="label2">Queue</span>
+      <span class="label2">Server</span>
       <span class="label3">Workers</span>
     </div>
     <div class="layer3 rotated">
@@ -230,6 +257,7 @@ How does it work?
 
   <script>
     var viz = new Visualization();
+    // viz.start();
   </script>
 </div>
 
