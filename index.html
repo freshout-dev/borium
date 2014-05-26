@@ -87,7 +87,7 @@
 
 <p><strong>The Server:</strong> In charge to keep the pending tasks organized and acts as the central task broker.</p>
 
-<p><strong>The Worker:</strong> Processing unit that run the actual tasks.</p>
+<p><strong>The Job Worker:</strong> Processing unit that run the actual tasks.</p>
 
 <h2>
 <a name="whats-it-for" class="anchor" href="#whats-it-for"><span class="octicon octicon-link"></span></a>What’s it for?</h2>
@@ -190,6 +190,13 @@ How does it work?
 <div class="highlight highlight-bash"><pre><span class="nv">$ </span>irb
 &gt; require <span class="s1">'borium'</span>
 &gt; Borium.put :ruby, <span class="s1">'hello world'</span>
+</pre></div>
+
+<p><strong>Getting a job from Borium</strong></p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>irb
+&gt; require <span class="s1">'borium'</span>
+&gt; Borium.get :ruby
 </pre></div>
 
 <p><strong>Live demo</strong></p>
