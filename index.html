@@ -134,27 +134,6 @@ How does it work?
 
     </div>
 
-  <!--
-  <div class="overlays-wrapper">
-    <div class="overlays-layer rotated">
-
-      <div class="tooltips-layer">
-        <div class="info-tooltip jobs-tooltip">
-          <div class="bubble">
-            The jobs are sent by the client using Borium's API method Borium.put(type, job).
-            The client can be any process that can talk to Borium's socket.
-          </div>
-        </div>
-      </div>
-
-      <div class="jobs-overlay overlay"></div>
-      <div class="queue-overlay overlay"></div>
-      <div class="workers-overlay overlay"></div>
-    </div>
-  </div>
-  -->
-
-
   </div>
 
   <div class="controls">
@@ -213,7 +192,7 @@ How does it work?
 <p><strong>Creating your first worker</strong></p>
 <span>save as worker.rb</span>
 
-<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'borium'</span>                                                                                                                                                                                            
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'borium'</span>
 <span class="kp">loop</span> <span class="k">do</span>
   <span class="n">job</span> <span class="o">=</span> <span class="no">Borium</span><span class="o">.</span><span class="n">get</span> <span class="ss">:ruby</span>
   <span class="k">if</span> <span class="n">job</span><span class="o">[</span><span class="s1">'status'</span><span class="o">]</span> <span class="o">==</span> <span class="s1">'found'</span>
