@@ -452,9 +452,38 @@ input#start.active, input#pause.active {
 }
 
 input#start:hover, input#pause:hover {
-background-color :#0065B3;
+  background-color :#0065B3;
 
--webkit-box-shadow: 0 0 1px rgba(0,0,0, .75);
--moz-box-shadow: 0 0 1px rgba(0,0,0, .75);
-box-shadow: 0 0 1px rgba(0,0,0, .75);
+  -webkit-box-shadow: 0 0 1px rgba(0,0,0, .75);
+  -moz-box-shadow: 0 0 1px rgba(0,0,0, .75);
+  box-shadow: 0 0 1px rgba(0,0,0, .75);
+}
+
+.features {
+  /*padding: 0 20px;*/
+}
+
+.features a.anchor {
+  /*padding-left: 25px;*/
+}
+
+.features b {
+  font-weight: bold;
+}
+
+.features .feature {
+  width: 50%;
+  float: left;
+}
+
+.features .feature-container {
+  padding: 26px;
+}
+
+.features .feature-row {
+  clear: both;
+}
+
+.clearfix {
+  clear: both;
 }

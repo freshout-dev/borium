@@ -66,7 +66,7 @@
           <a id="forkme_banner" href="https://github.com/freshout-dev/borium">View on GitHub</a>
 
           <h1 id="project_title">Borium</h1>
-          <h2 id="project_tagline">Borium - Simple job queue library.</h2>
+          <h2 id="project_tagline">Borium - Simple job queue library</h2>
 
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/freshout-dev/borium/zipball/master">Download this project as a .zip file</a>
@@ -79,9 +79,9 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h2>
-<a name="what-is-borium" class="anchor" href="#what-is-borium"><span class="octicon octicon-link"></span></a>What is Borium</h2>
+<a name="what-is-borium" class="anchor" href="#what-is-borium"><span class="octicon octicon-link"></span></a>What is Borium?</h2>
 
-<p>Borium is a simple library to enqueue jobs and execute them in the background. It plays well with JavaScript, Python, Ruby, Bash.</p>
+<p>Borium is a simple library to enqueue jobs and execute them in the background.</p>
 <!--
 <p>It’s got two parts</p>
 
@@ -89,23 +89,71 @@
 
 <p><strong>The Job Worker:</strong> Processing unit that run the actual tasks.</p>
 -->
+
+
+<h2>
+<a name="why-borium" class="anchor" href="#why-borium"><span class="octicon octicon-link"></span></a>Why Borium?</h2>
+
+<p>
+  The philosophy behind Borium is to provide as little as necessary to allow external
+  programs to send and receive messages.
+</p>
+<p>
+  The general use case of Borium is to execute tasks in the background of the web server.
+  Because of it’s simple API, you have a lot of flexibility to integrate Borium for uses beyond just background jobs.
+</p>
+
+
+<div class="features">
+
+  <div class="feature-row">
+    <div class="feature">
+      <div class="feature-container">
+        <h3><a name="easy-integration" class="anchor" href="#easy-integration"><span class="octicon octicon-link"></span></a>Easy integration</h3>
+        <p>With a very simple API and a simple text messaging system, Borium <b>can be easily integrated on every framework, no matter the language.</b></p>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-container">
+        <h3><a name="distributed" class="anchor" href="#distributed"><span class="octicon octicon-link"></span></a>Distributed</h3>
+        <p>Borium is distributed out of the box so <b>you can start with a few workers, and then scale to a cluster of computers.</b></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-row">
+    <div class="feature">
+      <div class="feature-container">
+        <h3><a name="auto-balanced" class="anchor" href="#auto-balanced"><span class="octicon octicon-link"></span></a>Auto Balanced</h3>
+        <p>The workers get tasks only when they are free to execute a new job. <b>You can control the load by adding or removing workers</b></p>
+      </div>
+    </div>
+
+
+    <div class="feature">
+      <div class="feature-container">
+        <h3><a name="resilient" class="anchor" href="#resilient"><span class="octicon octicon-link"></span></a>Resilient</h3>
+        <p>Even if the machine crashes or is turned off, <b>it will continue right where it was at as soon as it gets restarted.</b></p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="clearfix"></div>
+
+
+
 <h2>
 <a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
 
-<p><strong>Installation</strong></p>
-
-<p>Borium depends on Tokyo Cabinet to persist the pending jobs. if you are on mac you can install it by:</p>
-
-<div class="highlight highlight-bash"><pre><span class="nv">$ </span>brew install tokyo-cabinet
-</div>
-<p><strong>Install Borium</strong> </p>
-
-<div class="highlight highlight-bash"><pre>$ </span>gem install borium
+<p><strong>Start the Borium server</strong></p>
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>borium
 </pre></div>
 
-
-<p><strong>Creating your first worker</strong></p>
-<span>save as worker.rb</span>
+<p><strong>Create your first worker</strong></p>
+<span>$ ruby worker.rb</span>
 
 <div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'borium'</span>
 <span class="kp">loop</span> <span class="k">do</span>
@@ -117,14 +165,6 @@
 <span class="k">end</span>
 </pre></div>
 
-<p><strong>Start the Borium server</strong></p>
-
-<div class="highlight highlight-bash"><pre><span class="nv">$ </span>borium
-</pre></div>
-
-<p><strong>Start the worker</strong></p>
-<div class="highlight highlight-bash"><pre><span class="nv">$ </span>ruby worker.rb
-</pre></div>
 
 <p><strong>Enqueue a job</strong></p>
 
@@ -152,38 +192,6 @@
 
 
 <h2>
-<a name="what-makes-it-special" class="anchor" href="#what-makes-it-special"><span class="octicon octicon-link"></span></a>What Makes it Special?</h2>
-
-<h3>
-<a name="easy-integration" class="anchor" href="#easy-integration"><span class="octicon octicon-link"></span></a>Easy integration</h3>
-
-<p>With a very simple API and a simple text messaging system, Borium can be easily integrated on every framework, no matter the language.</p>
-
-<h3>
-<a name="distributed" class="anchor" href="#distributed"><span class="octicon octicon-link"></span></a>Distributed</h3>
-
-<p>Borium is distributed out of the box so you can start with a few workers, and then scale to a cluster of computers to scale.</p>
-
-<h3>
-<a name="auto-balanced" class="anchor" href="#auto-balanced"><span class="octicon octicon-link"></span></a>Auto Balanced</h3>
-
-<p>The workers get tasks only when they are free to execute a new job, if more jobs are on the line then more workers can come to handle them.</p>
-
-<h3>
-<a name="resilient" class="anchor" href="#resilient"><span class="octicon octicon-link"></span></a>Resilient</h3>
-
-<p>Even if the machine crashes or is turned off, it will continue right where it was at as soon as it gets restarted.</p>
-
-<h2>
-<a name="whats-it-for" class="anchor" href="#whats-it-for"><span class="octicon octicon-link"></span></a>What’s it for?</h2>
-
-<p>The general use case of Borium is to execute tasks in the background of the web server.</p>
-
-<p>It does this efficiently without replicating the entire processing stack. This is accomplished by using lite and specialized workers for every different type of tasks.</p>
-
-<p>Because of it’s simple API, you have a lot of flexibility to integrate Borium for uses beyond just background jobs.</p>
-
-<h2>
 <a name="how-does-it-work" class="anchor" href="#how-does-it-work"><span class="octicon octicon-link"></span></a>
 How does it work?
 </h2>
@@ -192,7 +200,7 @@ How does it work?
   Borium's architecture consists on three parts:
 </p>
 
-<p>
+<div>
   <dl>
     <dt>The Server</dt>
     <dd>
@@ -212,7 +220,7 @@ How does it work?
       different types to suit yout particular needs.
     </dd>
   </dl>
-</p>
+</div>
 
 
 <div>
@@ -272,7 +280,7 @@ How does it work?
 <h3>
 <a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h3>
 
-<p>Configuration is a JSON file.</p>
+<p>Configuration is stored on a JSON file you can customize</p>
 
 <pre><code>// place on /etc/borium/configuration.json
 
