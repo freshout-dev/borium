@@ -100,10 +100,10 @@ loop do
     response[:status] = app[:status][:unparsable]
     begin
       client.puts response.to_json
+      client.close
     rescue => e
       logger.warn 'Client closed the connection.'
     end
-    client.close
     logger.error "wrong request: #{chunks.inspect}"
     next
   end
@@ -139,10 +139,10 @@ loop do
   result = response.to_json
   begin
     client.puts(result)
+    client.close
   rescue => e
     logger.warn 'Client closed the connection.'
   end
-  client.close
   if response[:status] == app[:status][:nothing]
     app[:nothing_counter] += 1 
     if app[:nothing_counter] > 5000
