@@ -12,10 +12,9 @@ Strategy is that you have two kinds of applications interacting with Borium: 1) 
 
 Contributors: Kazuyoshi Tlacaelel, Joaquin Benitez, Ben Beltran.
 
-python api at: https://pypi.python.org/pypi/python-borium
 
 == Copyright
 
-Copyright (c) 2014 kazuyoshi tlacaelel. See LICENSE.txt for
+Copyright (c) 2014 Freshout. See LICENSE.txt for
 further details.
 
