@@ -51,7 +51,7 @@ Class('Queue').includes(CustomEventSupport)({
             job.sprite.animate({
                 cx : queue.SPRITE_X + queue.SPRITE_WIDTH - job.sprite.attr('r') - 5,
                 cy : cy
-            }, 500, function() {
+            }, 250, function() {
                 // console.log("Job enqueued!");
                 // job.sprite.removeClass('waiting');
                 queue.storage[type] = queue.storage[type] || [];
@@ -380,7 +380,7 @@ Class('JobGenerator').includes(CustomEventSupport)({
                 'class' : 'job ' + this.type
             });
             // console.log("this.queue.spritex", this.queue.SPRITE_X);
-            job.sprite.animate({ cx : this.queue.SPRITE_X + 10 }, 500, function() {
+            job.sprite.animate({ cx : this.queue.SPRITE_X + 10 }, 300, function() {
                 jobGenerator.queue.put(job.type, job);
             });
 
