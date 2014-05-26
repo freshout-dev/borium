@@ -421,3 +421,40 @@ Small Device Styles
   }
 
 }
+
+/* Custom code */
+
+dl dd {
+  font-style: normal;
+  margin-bottom: 1em;
+}
+
+input#start, input#pause {
+  cursor: pointer;
+  padding: 5px 15px;
+  background-color: #909090;
+  border: 1px solid #0065B3;
+
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+
+  -webkit-box-shadow: 0 0 4px rgba(0,0,0, .75);
+  -moz-box-shadow: 0 0 4px rgba(0,0,0, .75);
+  box-shadow: 0 0 4px rgba(0,0,0, .75);
+
+  color:#f3f3f3;
+  font-size: 1em;
+}
+
+input#start.active, input#pause.active {
+  background-color: #0090FF;
+}
+
+input#start:hover, input#pause:hover {
+background-color :#0065B3;
+
+-webkit-box-shadow: 0 0 1px rgba(0,0,0, .75);
+-moz-box-shadow: 0 0 1px rgba(0,0,0, .75);
+box-shadow: 0 0 1px rgba(0,0,0, .75);
+}

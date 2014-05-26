@@ -429,6 +429,26 @@ Class('Visualization')({
                 viz.jobGenerator.setRate($(this).val());
             });
 
+            var startButton = $('#start'),
+                pauseButton = $('#pause');
+
+            startButton.on('click', function() {
+                if(!viz.active) {
+                    viz.resume();
+                }
+                $('#start').removeClass('active');
+                $('#pause').addClass('active');
+            });
+
+            pauseButton.on('click', function() {
+                if(viz.active) {
+                    viz.pause();
+                }
+                $('#start').addClass('active');
+                $('#pause').removeClass('active');
+            });
+
+
             this.bindBrowserFocus();
         },
 

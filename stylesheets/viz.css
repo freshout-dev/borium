@@ -92,8 +92,8 @@ body {
 }
 
 .controls .control {
-  display: inline-block;
-  padding: 20px;
+  float: left;
+  padding: 20px 15px;
 }
 
 .controls .control span {
