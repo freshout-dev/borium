@@ -409,7 +409,7 @@ Class('Visualization')({
             this.workerGenerator = new WorkerGenerator({
                 canvas : this.canvas,
                 queue : this.queue,
-                workers : ['A']
+                workers : ['A', 'A', 'A']
             });
 
             this.jobGenerator.start();

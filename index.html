@@ -81,100 +81,14 @@
         <h2>
 <a name="what-is-borium" class="anchor" href="#what-is-borium"><span class="octicon octicon-link"></span></a>What is Borium</h2>
 
-<p>Borium is a lean queue job library to execute jobs in the background of web applications. It plays well with JavaScript, Python, Ruby, Bash.</p>
-
+<p>Borium is a simple library to enqueue jobs and execute them in the background. It plays well with JavaScript, Python, Ruby, Bash.</p>
+<!--
 <p>It’s got two parts</p>
 
 <p><strong>The Server:</strong> In charge to keep the pending tasks organized and acts as the central task broker.</p>
 
 <p><strong>The Job Worker:</strong> Processing unit that run the actual tasks.</p>
-
-<h2>
-<a name="whats-it-for" class="anchor" href="#whats-it-for"><span class="octicon octicon-link"></span></a>What’s it for?</h2>
-
-<p>The general use case of Borium is to execute tasks in the background of the web server.</p>
-
-<p>It does this efficiently without replicating the entire processing stack. This is accomplished by using lite and specialized workers for every different type of tasks.</p>
-
-<p>Because of it’s simple API, you have a lot of flexibility to integrate Borium for uses beyond just background jobs.</p>
-
-<h2>
-<a name="how-does-it-work" class="anchor" href="#how-does-it-work"><span class="octicon octicon-link"></span></a>
-How does it work?
-</h2>
-
-<div>
-
-
-  <div class="container">
-    <div class="layer1 rotated"></div>
-    <div class="layer2 rotated"></div>
-    <div class="layer-text rotated">
-      <span class="label1">Jobs</span>
-      <span class="label2">Queue</span>
-      <span class="label3">Workers</span>
-    </div>
-    <div class="layer3 rotated">
-
-      <svg class="viz" id="svg">
-        <filter id="jobGlow" filterUnits="userSpaceOnUse"><feGaussianBlur in="SourceAlpha" stdDeviation="4"></feGaussianBlur><feOffset dx="2" dy="2" result="offsetblur"></feOffset><feFlood flood-color="rgba(0,144,255,0.7)"></feFlood><feComposite in2="offsetblur" operator="in"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
-        <filter id="waitingGlow" filterUnits="userSpaceOnUse"><feGaussianBlur in="SourceAlpha" stdDeviation="4"></feGaussianBlur><feOffset dx="2" dy="2" result="offsetblur"></feOffset><feFlood flood-color="rgba(255,144,0,0.7)"></feFlood><feComposite in2="offsetblur" operator="in"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
-        <filter id="workerGlow" filterUnits="userSpaceOnUse"><feGaussianBlur in="SourceAlpha" stdDeviation="4"></feGaussianBlur><feOffset dx="2" dy="2" result="offsetblur"></feOffset><feFlood flood-color="rgba(0,144,0,0.7)"></feFlood><feComposite in2="offsetblur" operator="in"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
-        <filter id="drop-shadow">
-          <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
-          <feOffset dx="0" dy="7" result="offsetblur"/>
-          <feFlood flood-color="#000000"/>
-          <feComposite in2="offsetblur" operator="in"/>
-          <feMerge>
-            <feMergeNode/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-      </svg>
-
-    </div>
-
-  </div>
-
-  <div class="controls">
-    <div class="control">
-      <input class="jobSlider" type="range" name="jobDuration" min="0" max="4">
-      <span>Job spawn rate</span>
-    </div>
-    <div class="control">
-      <input class="workersSlider" type="range" name="workers" min="1" max="8">
-      <span>Number of workers</span>
-    </div>
-  </div>
-
-  <script>
-    var viz = new Visualization();
-  </script>
-</div>
-
-<h2>
-<a name="what-makes-it-special" class="anchor" href="#what-makes-it-special"><span class="octicon octicon-link"></span></a>What Makes it Special?</h2>
-
-<h3>
-<a name="distributed" class="anchor" href="#distributed"><span class="octicon octicon-link"></span></a>Distributed</h3>
-
-<p>Borium is distributed out of the box so you can start with a few workers, and then scale to a cluster of computers to scale.</p>
-
-<h3>
-<a name="auto-balanced" class="anchor" href="#auto-balanced"><span class="octicon octicon-link"></span></a>Auto Balanced</h3>
-
-<p>The workers get tasks only when they are free to execute a new job, if more jobs are on the line then more workers can come to handle them.</p>
-
-<h3>
-<a name="resilient" class="anchor" href="#resilient"><span class="octicon octicon-link"></span></a>Resilient</h3>
-
-<p>Even if the machine crashes or is turned off, it will continue right where it was at as soon as it gets restarted.</p>
-
-<h3>
-<a name="easy-integration" class="anchor" href="#easy-integration"><span class="octicon octicon-link"></span></a>Easy integration</h3>
-
-<p>With a very simple API and a simple text messaging system, Borium can be easily integrated on every framework, no matter the language.</p>
-
+-->
 <h2>
 <a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
 
@@ -222,10 +136,13 @@ How does it work?
 </pre></div>
 -->
 
-<p><strong>Live demo</strong></p>
 
+<!--
+<p><strong>Live demo</strong></p>
 <p>
-  <img width="100%" alt="" src="http://getborium.com/getting_started.gif"></p>
+  <img width="100%" alt="" src="http://getborium.com/getting_started.gif">
+</p>
+-->
 
 <h3>
 <a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h3>
@@ -242,6 +159,89 @@ How does it work?
   "storage"     : "/tmp/borium/"
 }
 </code></pre>
+
+
+<h2>
+<a name="what-makes-it-special" class="anchor" href="#what-makes-it-special"><span class="octicon octicon-link"></span></a>What Makes it Special?</h2>
+
+<h3>
+<a name="easy-integration" class="anchor" href="#easy-integration"><span class="octicon octicon-link"></span></a>Easy integration</h3>
+
+<p>With a very simple API and a simple text messaging system, Borium can be easily integrated on every framework, no matter the language.</p>
+
+<h3>
+<a name="distributed" class="anchor" href="#distributed"><span class="octicon octicon-link"></span></a>Distributed</h3>
+
+<p>Borium is distributed out of the box so you can start with a few workers, and then scale to a cluster of computers to scale.</p>
+
+<h3>
+<a name="auto-balanced" class="anchor" href="#auto-balanced"><span class="octicon octicon-link"></span></a>Auto Balanced</h3>
+
+<p>The workers get tasks only when they are free to execute a new job, if more jobs are on the line then more workers can come to handle them.</p>
+
+<h3>
+<a name="resilient" class="anchor" href="#resilient"><span class="octicon octicon-link"></span></a>Resilient</h3>
+
+<p>Even if the machine crashes or is turned off, it will continue right where it was at as soon as it gets restarted.</p>
+
+<h2>
+<a name="whats-it-for" class="anchor" href="#whats-it-for"><span class="octicon octicon-link"></span></a>What’s it for?</h2>
+
+<p>The general use case of Borium is to execute tasks in the background of the web server.</p>
+
+<p>It does this efficiently without replicating the entire processing stack. This is accomplished by using lite and specialized workers for every different type of tasks.</p>
+
+<p>Because of it’s simple API, you have a lot of flexibility to integrate Borium for uses beyond just background jobs.</p>
+
+<h2>
+<a name="how-does-it-work" class="anchor" href="#how-does-it-work"><span class="octicon octicon-link"></span></a>
+How does it work?
+</h2>
+
+<div>
+  <div class="container">
+    <div class="layer1 rotated"></div>
+    <div class="layer2 rotated"></div>
+    <div class="layer-text rotated">
+      <span class="label1">Jobs</span>
+      <span class="label2">Queue</span>
+      <span class="label3">Workers</span>
+    </div>
+    <div class="layer3 rotated">
+
+      <svg class="viz" id="svg">
+        <filter id="jobGlow" filterUnits="userSpaceOnUse"><feGaussianBlur in="SourceAlpha" stdDeviation="4"></feGaussianBlur><feOffset dx="2" dy="2" result="offsetblur"></feOffset><feFlood flood-color="rgba(0,144,255,0.7)"></feFlood><feComposite in2="offsetblur" operator="in"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+        <filter id="waitingGlow" filterUnits="userSpaceOnUse"><feGaussianBlur in="SourceAlpha" stdDeviation="4"></feGaussianBlur><feOffset dx="2" dy="2" result="offsetblur"></feOffset><feFlood flood-color="rgba(255,144,0,0.7)"></feFlood><feComposite in2="offsetblur" operator="in"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+        <filter id="workerGlow" filterUnits="userSpaceOnUse"><feGaussianBlur in="SourceAlpha" stdDeviation="4"></feGaussianBlur><feOffset dx="2" dy="2" result="offsetblur"></feOffset><feFlood flood-color="rgba(0,144,0,0.7)"></feFlood><feComposite in2="offsetblur" operator="in"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+        <filter id="drop-shadow">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+          <feOffset dx="0" dy="7" result="offsetblur"/>
+          <feFlood flood-color="#000000"/>
+          <feComposite in2="offsetblur" operator="in"/>
+          <feMerge>
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </svg>
+
+    </div>
+  </div>
+  <div class="controls">
+    <div class="control">
+      <input class="jobSlider" type="range" name="jobDuration" min="0" max="4">
+      <span>Job spawn rate</span>
+    </div>
+    <div class="control">
+      <input class="workersSlider" type="range" name="workers" min="1" max="8">
+      <span>Number of workers</span>
+    </div>
+  </div>
+
+  <script>
+    var viz = new Visualization();
+  </script>
+</div>
 
 <h2>
 <a name="use-cases" class="anchor" href="#use-cases"><span class="octicon octicon-link"></span></a>Use Cases</h2>
