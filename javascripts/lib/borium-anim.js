@@ -109,7 +109,7 @@ Class('Worker').includes(CustomEventSupport)({
 
         start : function () {
             this.pid = new Date().getTime();
-            console.log("Starting", (new Date().getTime()));
+            // console.log("Starting", (new Date().getTime()));
             var wasStopped = this._stopped;
             this._stopped = false;
             if(wasStopped) {
@@ -118,7 +118,7 @@ Class('Worker').includes(CustomEventSupport)({
         },
 
         stop : function() {
-            console.log("Stopping", (new Date().getTime()));
+            // console.log("Stopping", (new Date().getTime()));
             this._stopped = true;
         },
 
@@ -137,16 +137,16 @@ Class('Worker').includes(CustomEventSupport)({
         },
 
         _loop : function (pid) {
-            console.log("Calling loop");
+            // console.log("Calling loop");
             this._loopFetch(pid);
         },
 
         _loopFetch : function(pid) {
             if(pid !== this.pid) {
-                console.log("DIFFERENT! loopfetch");
+                // console.log("DIFFERENT! loopfetch");
                 return;
             }
-            console.log("LOOp fetch");
+            // console.log("LOOp fetch");
             var worker = this;
 
             if(this._stopped) {
@@ -154,7 +154,7 @@ Class('Worker').includes(CustomEventSupport)({
             }
 
             this.sprite.animate({ cx : this.startX - 150, cy : this.baseline }, this.FETCH_SPEED, function() {
-                console.log("Callback on loopfetch animation", worker._stopped);
+                // console.log("Callback on loopfetch animation", worker._stopped);
                 var response = worker.queue.get(worker.type);
                 if(response.status === 'found') {
                     worker._job = response.job;
@@ -169,10 +169,10 @@ Class('Worker').includes(CustomEventSupport)({
 
         _loopWork : function(pid) {
             if(pid !== this.pid) {
-                console.log("DIFFERENT! loopwork");
+                // console.log("DIFFERENT! loopwork");
                 return;
             }
-            console.log(":Loop wokr");
+            // console.log(":Loop wokr");
             var worker = this;
 
             if(this._stopped) {
@@ -180,7 +180,7 @@ Class('Worker').includes(CustomEventSupport)({
             }
 
             this.sprite.animate({ cx : this.startX, cy : this.startY }, this.WORK_SPEED, function() {
-                console.log("Callback on loopWork sprite animation", worker._stopped);
+                // console.log("Callback on loopWork sprite animation", worker._stopped);
                 if(worker._job) {
                     worker.jobInProgressSprite = worker.canvas.circle(
                             worker.sprite.attr('cx'),
@@ -192,7 +192,7 @@ Class('Worker').includes(CustomEventSupport)({
                     worker.sprite.removeClass('fetched');
                     worker.sprite.addClass('processing');
                     worker.jobInProgressSprite.animate({ 'r' : 0 }, worker._job.getDuration(), function() {
-                        console.log("Callback on loopWork job animation", worker._stopped);
+                        // console.log("Callback on loopWork job animation", worker._stopped);
                         if(!worker._stopped) {
                             worker._loopFetch(pid);
                         }
@@ -462,7 +462,7 @@ Class('Visualization')({
                 viz.jobGenerator.setRate($(this).val());
             });
 
-            var jobsTooltip = new Tooltip({ canvas : this.canvas, overlay : $('.jobs-overlay') });
+            // var jobsTooltip = new Tooltip({ canvas : this.canvas, overlay : $('.jobs-overlay') });
             // var jobsTooltipOverlay = this.canvas.rect(0, 0, this.queue.SPRITE_X, 280).addClass('info-overlay');
             // jobsTooltipOverlay.mouseover(function() { jobsTooltip.activate(); });
             // jobsTooltipOverlay.mouseout(function() { jobsTooltip.deactivate(); });

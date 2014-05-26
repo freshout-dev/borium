@@ -30,7 +30,7 @@ body {
   -ms-backface-visibility:     visible;
   backface-visibility:         visible;
 
-  -webkit-transform: perspective(690px) rotateY(0deg) rotate3d(1, 0, 0, 15deg);
+  -webkit-transform: perspective(690px) rotateY(0deg) rotate3d(1, 0, 0, 15deg) rotateZ(0);
   -moz-transform:    perspective(690px) rotateY(0deg) rotate3d(1, 0, 0, 15deg);
   -ms-transform:     perspective(690px) rotateY(0deg) rotate3d(1, 0, 0, 15deg);
   -o-transform:      perspective(690px) rotateY(0deg) rotate3d(1, 0, 0, 15deg);
@@ -102,7 +102,7 @@ body {
 
 /* Info boxes */
 .overlays-wrapper {
-   -webkit-transform: translate3d(0px, 0px, 0px)
+   -webkit-transform: translate3d(0px, 0px, 0px);
 }
 
 .overlays-layer {
