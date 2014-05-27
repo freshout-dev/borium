@@ -214,23 +214,30 @@ How does it work?
     <dt>The Server</dt>
     <dd>
       Borium server listens for requests to put or retrieve a job from the queue.
-      Internally, it persists the jobs and handles concurrency, making it
-      resilient.
+      Internally, it uses Tokyo Cabinet for persisting the jobs, making it resilient.
+      However, it does not expose this to the other components so they don't need
+      to know about it.
     </dd>
-    <dt>The jobs</dt>
+    <dt>The Jobs</dt>
     <dd>
       The jobs are passed from the client to the Borium server with the information
-      needed for the workers to process it.
+      needed for the workers to process it. The job is sent with a type string and a
+      JSON object as the payload, so it is not tied to the implementation on the
+      client side.
     </dd>
-    <dt>The workers</dt>
+    <dt>The Workers</dt>
     <dd>
-      The workers are specialized programs that execute a single task. They continuously
-      poll the Borium server for new jobs. You can have any number of workers of
-      different types to suit yout particular needs.
+      The workers are specialized programs that execute a single task, determined
+      by its type. They continuously poll the Borium server for new jobs.
+      You can have any number and types of workers to suit your particular
+      needs.
     </dd>
   </dl>
 </div>
 
+<p>
+  See how the components interact with each other so you have a better idea:
+</p>
 
 <div class="visualization">
   <div class="container">
@@ -306,6 +313,7 @@ How does it work?
 <h2>
 <a name="use-cases" class="anchor" href="#use-cases"><span class="octicon octicon-link"></span></a>Use Cases</h2>
 
+
 <h3>
 <a name="background-jobs" class="anchor" href="#background-jobs"><span class="octicon octicon-link"></span></a>Background Jobs</h3>
 
@@ -349,6 +357,8 @@ How does it work?
   <span class="nb">sleep</span> <span class="mi">0</span><span class="o">.</span><span class="mi">5</span>
 <span class="k">end</span>
 </pre></div>
+
+<hr />
 
 <h3>
 <a name="priority-queues" class="anchor" href="#priority-queues"><span class="octicon octicon-link"></span></a>Priority Queues</h3>
@@ -406,6 +416,8 @@ How does it work?
 <span class="mi">5</span><span class="o">.</span><span class="n">times</span> <span class="p">{</span> <span class="no">Borium</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">'ruby-high'</span><span class="p">,</span> <span class="s1">'sleep 5'</span><span class="p">)</span> <span class="p">}</span>
 </pre></div>
 
+<hr />
+
 <h3>
 <a name="image-processing" class="anchor" href="#image-processing"><span class="octicon octicon-link"></span></a>Image Processing</h3>
 
@@ -434,6 +446,8 @@ How does it work?
   <span class="nb">sleep</span> <span class="mi">0</span><span class="o">.</span><span class="mi">5</span>
 <span class="k">end</span>
 </pre></div>
+
+<hr />
 
 <h3>
 <a name="scheduled-jobs" class="anchor" href="#scheduled-jobs"><span class="octicon octicon-link"></span></a>Scheduled Jobs</h3>
