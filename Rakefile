@@ -15,7 +15,7 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
   gem.name = "borium"
-  gem.homepage = "http://github.com/freshout-dev/borium"
+  gem.homepage = "http://getborium.com"
   gem.license = "MIT"
   gem.summary = %Q{Borium - Distributed background engine.}
   gem.description = %Q{Borium is a distributed super-queue engine, capable of storing many different kinds of queues (fifo).}
