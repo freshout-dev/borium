@@ -122,7 +122,7 @@ loop do
   db = app[:databases][job_type]
 
   if (request == 'put')
-    db.put(generate_key, chunks.join('').gsub(app[:eot], '').gsub(/\n$/, ''))
+    db.put(generate_key, chunks.join(':').gsub(app[:eot], '').gsub(/\n$/, ''))
     response[:status] = app[:status][:stored]
   else
     db.iterinit
