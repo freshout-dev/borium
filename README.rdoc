@@ -10,7 +10,7 @@ Borium ensures that a requested item in queue will be given to only one client o
 
 Strategy is that you have two kinds of applications interacting with Borium: 1) The ones that put something in the queue. 2) The ones that get something out of the queue.
 
-Contributors: Kazuyoshi Tlacaelel, Joaquin Benitez, Ben Beltran.
+Contributors: Kazuyoshi Tlacaelel, Fernando Trasviña, Joaquin Benitez, Ben Beltran.
 
 
 == Copyright
